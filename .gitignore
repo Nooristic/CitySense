@@ -1,0 +1,36 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+
+# Virtual environments (all names)
+.env
+.venv/
+env/
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Environment variables
+.env.local
+.env.*
+
+# Node (for future React days)
+node_modules/
+dist/
+build/
+*.log
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
+
+# OS files
+Thumbs.db
+Desktop.ini
