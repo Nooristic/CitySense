@@ -2,26 +2,27 @@
 
 **Goal:** Build CitySense demo + prepare application for IIIT Hyderabad SCRC Internship  
 **Deadline:** August 22, 2026  
-**Current Date:** August 15, 2026
+**Current Date:** August 17, 2026 (Day 2)
 
 ---
 
 ## 📋 Overall Progress Tracker
 
 ### Day 1 (Aug 16) - FastAPI + REST ⭐ HIGHEST PRIORITY
-- [ ] Read FastAPI tutorial (First Steps through Pydantic Models)
-- [ ] Build Mini Sensor API with 3+ endpoints
-- [ ] Test with Swagger UI at `/docs`
-- [ ] Optional: Port one Express API to FastAPI
-- [ ] Push to GitHub with good commit message
-- **Status:** 🟡 Setup complete, ready to start
+- [x] Read FastAPI tutorial (First Steps through Pydantic Models)
+- [x] Build Mini Sensor API with 3+ endpoints
+- [x] Test with Swagger UI at `/docs`
+- [x] Optional: Port one Express API to FastAPI
+- [x] Push to GitHub with good commit message
+- **Status:** ✅ COMPLETE - Pushed to GitHub
 
 ### Day 2 (Aug 17) - PostgreSQL + Data Generation
-- [ ] Install PostgreSQL
-- [ ] Learn key Postgres vs MySQL differences
-- [ ] Connect FastAPI to Postgres with SQLAlchemy
-- [ ] Generate 50k-100k synthetic sensor dataset
-- [ ] Build aggregation endpoint (AVG, GROUP BY)
+- [ ] Install PostgreSQL (user task - in progress)
+- [x] Learn key Postgres vs MySQL differences
+- [x] Connect FastAPI to Postgres with SQLAlchemy
+- [x] Generate 50k-100k synthetic sensor dataset (script ready)
+- [x] Build aggregation endpoint (AVG, GROUP BY)
+- **Status:** 🟡 Code complete - waiting for PostgreSQL install
 
 ### Day 3 (Aug 18) - React + Maps + Graphs
 - [ ] React refresher (components, hooks, fetch)
@@ -62,14 +63,23 @@
 ## 📁 Project Structure
 
 ```
-SCRC_Internship_Sprint/
+CitySense/
 ├── DAY1_GUIDE.md                    # ✅ Created
-├── day1_fastapi_basics/             # ✅ Created
+├── DAY2_GUIDE.md                    # ✅ Created
+├── POSTGRES_VS_MYSQL.md             # ✅ Created
+├── day1_fastapi_basics/             # ✅ COMPLETE
 │   ├── main.py                      # ✅ Working FastAPI app
 │   ├── README.md                    # ✅ Complete docs
 │   └── requirements.txt             # ✅ Dependencies listed
-├── day2_postgres_integration/       # 🔜 Tomorrow
-├── day3_react_frontend/             # 🔜 Day 3
+├── day2_postgres_integration/       # ✅ CODE COMPLETE
+│   ├── main.py                      # ✅ FastAPI + SQLAlchemy
+│   ├── database.py                  # ✅ DB connection
+│   ├── models.py                    # ✅ ORM models
+│   ├── generate_data.py             # ✅ Data generator
+│   ├── requirements.txt             # ✅ Dependencies
+│   ├── .env                         # ✅ Config
+│   └── README.md                    # ✅ Documentation
+├── day3_react_frontend/             # 🔜 Tomorrow
 ├── day4_ml_llm/                     # 🔜 Day 4
 └── CitySense_Final/                 # 🔜 Day 5 (consolidated)
 ```
