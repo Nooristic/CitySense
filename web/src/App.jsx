@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import SensorMap from "./components/SensorMap"
 import HourlyTrend from "./components/HourlyTrend"
 import TopPolluted from "./components/TopPolluted"
+import AiPanel from "./components/AiPanel"
 import { getHourlyTrend, getSensors, getTopPolluted } from "./lib/api"
 import { pm25Level } from "./lib/aqi"
 import "./App.css"
@@ -144,6 +145,14 @@ function App() {
               <TopPolluted data={topPolluted} />
             )}
           </div>
+        </section>
+
+        <section className="panel ai-panel">
+          <div className="panel-head">
+            <h2>AI assistant</h2>
+            <span className="hint">Gemini with local Ollama fallback</span>
+          </div>
+          <AiPanel sensors={sensors} selectedSensorId={selectedSensorId} />
         </section>
 
         <section className="panel about-panel">

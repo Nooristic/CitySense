@@ -151,6 +151,156 @@
   color: #34d399;
 }
 
+/* AI assistant panel */
+.ai-panel {
+  grid-column: 1 / -1;
+}
+
+.ai-layout {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 16px;
+}
+
+.ai-chat {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ai-form {
+  display: flex;
+  gap: 8px;
+}
+
+.ai-input {
+  flex: 1;
+  background: #0f172a;
+  color: #e2e8f0;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+}
+
+.ai-form button,
+.suggest-chips button,
+.ai-predict > button {
+  border: none;
+  background: #34d399;
+  color: #052e1c;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.ai-form button:disabled,
+.suggest-chips button:disabled,
+.ai-predict > button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.suggest-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.suggest-chips button {
+  background: #0f172a;
+  color: #94a3b8;
+  font-weight: 400;
+  border: 1px solid #334155;
+}
+
+.chat-log {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.chat-entry {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.chat-question {
+  margin: 0 0 6px;
+  color: #34d399;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.chat-answer {
+  margin: 0;
+  color: #cbd5e1;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.provider-badge {
+  margin-left: 6px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: rgba(52, 211, 153, 0.15);
+  color: #34d399;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.ai-error {
+  margin: 0;
+  color: #fca5a5;
+  font-size: 0.82rem;
+}
+
+.ai-predict {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.prediction-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  padding: 18px;
+  gap: 8px;
+}
+
+.prediction-label {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 0.85rem;
+}
+
+.prediction-value {
+  margin: 0;
+  color: #f1f5f9;
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.prediction-meta {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.78rem;
+}
+
 .footer {
   color: #475569;
   font-size: 0.78rem;
@@ -160,6 +310,10 @@
 
 @media (max-width: 900px) {
   .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ai-layout {
     grid-template-columns: 1fr;
   }
 }

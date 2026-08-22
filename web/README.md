@@ -11,6 +11,7 @@ A Vite + React 19 dashboard (`src/App.jsx`) wired to the Day 2 FastAPI backend:
 - **Sensor network map** (`src/components/SensorMap.jsx`) — react-leaflet `MapContainer` centered on Hyderabad, one `CircleMarker` per sensor colored by zone. Clicking a marker selects that sensor everywhere else in the app.
 - **Hourly trends chart** (`src/components/HourlyTrend.jsx`) — Chart.js line chart from `/aggregations/hourly-trend`: PM2.5 on the right axis, temperature/humidity on the left.
 - **Most polluted areas** (`src/components/TopPolluted.jsx`) — horizontal bar chart of avg PM2.5 per location from `/aggregations/top-polluted`, bars colored by AQI bucket (`src/lib/aqi.js`).
+- **AI assistant panel** (`src/components/AiPanel.jsx`) — "Ask CitySense" chat box calling `POST /api/ask` (grounded on last-24h data; provider badge shows gemini/ollama), plus a PM2.5 prediction card calling `POST /api/predict` for the selected sensor with AQI-colored result.
 - Time-range switcher (1d / 3d / 7d) shared by both charts; loading/error/empty states throughout.
 
 CORS is already open on the backend (`server/main.py`, `allow_origins=["*"]`), so no backend change was needed.
@@ -37,6 +38,8 @@ Open http://localhost:5173
 | `GET /sensors` | — | markers, sensor dropdown |
 | `GET /aggregations/hourly-trend` | `sensor_id`, `hours` (24/72/168) | line chart |
 | `GET /aggregations/top-polluted` | `hours`, `limit=5` | bar chart |
+| `POST /api/ask` | `{question}` (3–500 chars) | AI chat answers |
+| `POST /api/predict` | `{sensor_id}` | PM2.5 forecast card |
 
 The API base URL defaults to `http://localhost:8000`; override with `VITE_API_URL` in `.env`.
 
@@ -48,4 +51,4 @@ The API base URL defaults to `http://localhost:8000`; override with `VITE_API_UR
 
 ---
 
-Next up (Day 4): `/api/predict` (scikit-learn PM2.5 model) and `/api/ask` (Gemini LLM).
+`/api/ask` needs an LLM provider: Gemini key in `server/.env` **or** local Ollama running (see root README). Without either, the chat shows a 503 error message; prediction works regardless.
