@@ -11,6 +11,7 @@ New work goes in a **new `dayN_*` folder** (per `PROGRESS_TRACKER.md`: `day3_rea
 - Run commands **from inside the day folder** (imports are flat, e.g. `from database import ...`): `uvicorn main:app --reload`.
 - Deps are installed per folder; pins intentionally differ between days (day1 vs day2 requirements). Don't share one venv across days. Windows activation: `venv\Scripts\Activate.ps1`.
 - Verification is manual: hit `http://localhost:8000/docs` (Swagger) or curl. There are no automated tests or lint/typecheck config — don't invent commands for them.
+- Exception: `day3_react_frontend` is a Node/Vite app — use `npm run dev` / `npm run build` / `npm run lint` (oxlint) there, and start the day2 backend first.
 
 ## Day 2 setup order (matters)
 

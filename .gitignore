@@ -17,6 +17,9 @@ env/
 *.swp
 *.swo
 .DS_Store
+.opencode/
+.claude/
+
 
 # Environment variables
 .env.local

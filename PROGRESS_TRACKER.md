@@ -25,10 +25,11 @@
 - **Status:** 🟡 Code complete - waiting for PostgreSQL install
 
 ### Day 3 (Aug 18) - React + Maps + Graphs
-- [ ] React refresher (components, hooks, fetch)
-- [ ] Add Leaflet for map visualization
-- [ ] Add Chart.js for time-series + bar charts
-- [ ] Wire frontend to FastAPI backend (enable CORS)
+- [x] React refresher (components, hooks, fetch)
+- [x] Add Leaflet for map visualization
+- [x] Add Chart.js for time-series + bar charts
+- [x] Wire frontend to FastAPI backend (enable CORS)
+- **Status:** ✅ COMPLETE - Dashboard built & verified against live API (Aug 22)
 
 ### Day 4 (Aug 19) - ML + LLM Endpoints
 - [ ] Train scikit-learn model (predict PM2.5)
@@ -79,8 +80,11 @@ CitySense/
 │   ├── requirements.txt             # ✅ Dependencies
 │   ├── .env                         # ✅ Config
 │   └── README.md                    # ✅ Documentation
-├── day3_react_frontend/             # 🔜 Tomorrow
-├── day4_ml_llm/                     # 🔜 Day 4
+├── day3_react_frontend/               # ✅ COMPLETE (Vite + React, Leaflet map, Chart.js)
+│   ├── src/App.jsx                    # ✅ Dashboard layout + data fetching
+│   ├── src/components/                # ✅ SensorMap, HourlyTrend, TopPolluted
+│   └── README.md                      # ✅ Run instructions
+├── day4_ml_llm/                       # 🔜 Day 4
 └── CitySense_Final/                 # 🔜 Day 5 (consolidated)
 ```
 
