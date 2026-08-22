@@ -39,11 +39,12 @@
 - **Status:** ✅ COMPLETE - verified live Aug 22 (R²=0.828, MAE=7.62 µg/m³)
 
 ### Day 5 (Aug 20) - Polish + Documentation
-- [ ] Clean repo structure
-- [ ] Add .gitignore, requirements.txt, .env handling
-- [ ] Write comprehensive README with architecture diagram
+- [x] Clean repo structure (`server/`, `web/`, `fastapi_basics/`)
+- [x] Add .gitignore, requirements.txt, .env handling
+- [x] Write comprehensive README with architecture diagram
 - [ ] Add error handling and basic tests
-- [ ] Good Git commits throughout
+- [x] Good Git commits throughout
+- **Status:** 🟡 Mostly complete — README rewritten Aug 22
 
 ### Day 6 (Aug 21) - Application Submission
 - [ ] Update resume with 5 specific changes
