@@ -18,6 +18,7 @@ from datetime import datetime, timedelta
 
 from database import get_db
 from models import Sensor, Reading
+from ai_routes import router as ai_router
 
 app = FastAPI(
     title="CitySense API",
@@ -33,6 +34,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(ai_router)
 
 
 # ==================== PYDANTIC MODELS (API schemas) ====================

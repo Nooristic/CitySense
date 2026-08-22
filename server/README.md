@@ -68,7 +68,7 @@ CREATE DATABASE citysense;
 
 ### Step 3: Generate Data
 ```bash
-cd C:\Users\Dell\Downloads\CitySense\day2_postgres_integration
+cd C:\Users\Dell\Downloads\CitySense\server
 python generate_data.py
 ```
 
@@ -235,7 +235,7 @@ CREATE DATABASE citysense;
 **Import error (`ModuleNotFoundError: No module named 'models'`):**
 ```bash
 # Make sure you're in the right directory
-cd C:\Users\Dell\Downloads\CitySense\day2_postgres_integration
+cd C:\Users\Dell\Downloads\CitySense\server
 python generate_data.py
 ```
 

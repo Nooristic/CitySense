@@ -1,6 +1,5 @@
-# Day 3: React Frontend — Map + Charts Dashboard
+# Web Dashboard — Map + Charts
 
-**Date:** August 22, 2026
 **Status:** Complete — verified against live API
 
 ---
@@ -14,17 +13,17 @@ A Vite + React 19 dashboard (`src/App.jsx`) wired to the Day 2 FastAPI backend:
 - **Most polluted areas** (`src/components/TopPolluted.jsx`) — horizontal bar chart of avg PM2.5 per location from `/aggregations/top-polluted`, bars colored by AQI bucket (`src/lib/aqi.js`).
 - Time-range switcher (1d / 3d / 7d) shared by both charts; loading/error/empty states throughout.
 
-CORS is already open on the backend (`day2_postgres_integration/main.py`, `allow_origins=["*"]`), so no backend change was needed.
+CORS is already open on the backend (`server/main.py`, `allow_origins=["*"]`), so no backend change was needed.
 
 ## How to Run
 
 ```bash
 # Terminal 1 — backend first (Postgres must be running, DB seeded)
-cd day2_postgres_integration
+cd server
 uvicorn main:app --reload
 
 # Terminal 2 — frontend
-cd day3_react_frontend
+cd web
 npm install
 npm run dev
 ```

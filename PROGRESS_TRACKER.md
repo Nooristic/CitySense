@@ -17,12 +17,12 @@
 - **Status:** ✅ COMPLETE - Pushed to GitHub
 
 ### Day 2 (Aug 17) - PostgreSQL + Data Generation
-- [ ] Install PostgreSQL (user task - in progress)
+- [x] Install PostgreSQL
 - [x] Learn key Postgres vs MySQL differences
 - [x] Connect FastAPI to Postgres with SQLAlchemy
-- [x] Generate 50k-100k synthetic sensor dataset (script ready)
+- [x] Generate ~20k synthetic sensor dataset
 - [x] Build aggregation endpoint (AVG, GROUP BY)
-- **Status:** 🟡 Code complete - waiting for PostgreSQL install
+- **Status:** ✅ COMPLETE - verified live (10 sensors, 20k readings)
 
 ### Day 3 (Aug 18) - React + Maps + Graphs
 - [x] React refresher (components, hooks, fetch)
@@ -32,10 +32,11 @@
 - **Status:** ✅ COMPLETE - Dashboard built & verified against live API (Aug 22)
 
 ### Day 4 (Aug 19) - ML + LLM Endpoints
-- [ ] Train scikit-learn model (predict PM2.5)
-- [ ] Expose as `/api/predict` endpoint
-- [ ] Add Gemini LLM endpoint `/api/ask`
-- [ ] Test both AI endpoints
+- [x] Train scikit-learn model (predict PM2.5)
+- [x] Expose as `/api/predict` endpoint
+- [x] Add Gemini LLM endpoint `/api/ask` (with local Ollama fallback)
+- [x] Test both AI endpoints
+- **Status:** ✅ COMPLETE - verified live Aug 22 (R²=0.828, MAE=7.62 µg/m³)
 
 ### Day 5 (Aug 20) - Polish + Documentation
 - [ ] Clean repo structure
@@ -65,27 +66,26 @@
 
 ```
 CitySense/
-├── DAY1_GUIDE.md                    # ✅ Created
-├── DAY2_GUIDE.md                    # ✅ Created
-├── POSTGRES_VS_MYSQL.md             # ✅ Created
-├── day1_fastapi_basics/             # ✅ COMPLETE
-│   ├── main.py                      # ✅ Working FastAPI app
-│   ├── README.md                    # ✅ Complete docs
-│   └── requirements.txt             # ✅ Dependencies listed
-├── day2_postgres_integration/       # ✅ CODE COMPLETE
-│   ├── main.py                      # ✅ FastAPI + SQLAlchemy
-│   ├── database.py                  # ✅ DB connection
-│   ├── models.py                    # ✅ ORM models
-│   ├── generate_data.py             # ✅ Data generator
-│   ├── requirements.txt             # ✅ Dependencies
-│   ├── .env                         # ✅ Config
-│   └── README.md                    # ✅ Documentation
-├── day3_react_frontend/               # ✅ COMPLETE (Vite + React, Leaflet map, Chart.js)
+├── fastapi_basics/                    # ✅ COMPLETE (Day 1)
+│   ├── main.py                        # ✅ Working FastAPI app
+│   ├── README.md                      # ✅ Complete docs
+│   └── requirements.txt               # ✅ Dependencies listed
+├── server/                            # ✅ COMPLETE (Day 2 + Day 4, renamed from day2_postgres_integration)
+│   ├── main.py                        # ✅ FastAPI + SQLAlchemy + AI router
+│   ├── database.py                    # ✅ DB connection
+│   ├── models.py                      # ✅ ORM models
+│   ├── generate_data.py               # ✅ Data generator
+│   ├── ml_model.py                    # ✅ PM2.5 RandomForest (Day 4)
+│   ├── train_model.py                 # ✅ CLI trainer
+│   ├── ai_routes.py                   # ✅ /api/predict + /api/ask (Gemini → Ollama fallback)
+│   ├── requirements.txt               # ✅ Dependencies
+│   ├── .env                           # ✅ Config (gitignored)
+│   └── README.md                      # ✅ Documentation
+├── web/                               # ✅ COMPLETE (Day 3, renamed from react_frontend)
 │   ├── src/App.jsx                    # ✅ Dashboard layout + data fetching
 │   ├── src/components/                # ✅ SensorMap, HourlyTrend, TopPolluted
 │   └── README.md                      # ✅ Run instructions
-├── day4_ml_llm/                       # 🔜 Day 4
-└── CitySense_Final/                 # 🔜 Day 5 (consolidated)
+└── CitySense_Final/                   # 🔜 Day 5 (consolidated)
 ```
 
 ---
