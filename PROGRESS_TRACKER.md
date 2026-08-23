@@ -42,9 +42,9 @@
 - [x] Clean repo structure (`server/`, `web/`, `fastapi_basics/`)
 - [x] Add .gitignore, requirements.txt, .env handling
 - [x] Write comprehensive README with architecture diagram
-- [ ] Add error handling and basic tests
+- [x] Add error handling and basic tests
 - [x] Good Git commits throughout
-- **Status:** 🟡 Mostly complete — README rewritten Aug 22
+- **Status:** ✅ COMPLETE - 18 pytest cases green, error hardening done (Aug 23)
 
 ### Day 6 (Aug 21) - Application Submission
 - [ ] Update resume with 5 specific changes

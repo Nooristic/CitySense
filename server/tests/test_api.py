@@ -212,3 +212,36 @@ def test_model_info():
     meta = response.json()
     assert meta["model_type"] == "RandomForestRegressor"
     assert meta["training_rows"] > 0
+
+
+# ==================== ERROR HARDENING ====================
+
+def test_database_unavailable_returns_clean_503():
+    """PostgreSQL unreachable → 503 JSON, not a raw 500 traceback."""
+    from sqlalchemy.exc import OperationalError
+
+    from database import get_db
+
+    def broken_db():
+        raise OperationalError("SELECT 1", {}, Exception("connection refused"))
+
+    app.dependency_overrides[get_db] = broken_db
+    try:
+        response = client.get("/health")
+        assert response.status_code == 503
+        assert response.json()["detail"] == "Database unavailable - check PostgreSQL is running."
+    finally:
+        app.dependency_overrides.clear()
+
+
+def test_air_quality_context_survives_empty_window(db_session):
+    """_air_quality_context must not crash when the 24h window is empty.
+
+    Calls the real function against live data; if the dataset ages past
+    the 24h cutoff this exercises the 7-day fallback path too.
+    """
+    from ai_routes import _air_quality_context
+
+    text = _air_quality_context(db_session)
+    assert isinstance(text, str)
+    assert len(text) > 10

@@ -8,11 +8,13 @@ Day 2 evolution of the Day 1 API:
 - Ready for 75k+ sensor readings
 """
 
-from fastapi import FastAPI, HTTPException, Depends, Query
+from fastapi import FastAPI, HTTPException, Depends, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 from sqlalchemy import func, desc
+from sqlalchemy.exc import OperationalError
 from typing import Optional, List
 from datetime import datetime, timedelta
 
@@ -36,6 +38,15 @@ app.add_middleware(
 )
 
 app.include_router(ai_router)
+
+
+@app.exception_handler(OperationalError)
+async def database_unavailable(request: Request, exc: OperationalError):
+    """PostgreSQL down/restarting → clean 503 instead of a raw 500 traceback."""
+    return JSONResponse(
+        status_code=503,
+        content={"detail": "Database unavailable - check PostgreSQL is running."},
+    )
 
 
 # ==================== PYDANTIC MODELS (API schemas) ====================

@@ -7,7 +7,7 @@ falling back to a local Ollama server when GEMINI_API_KEY is not set.
 """
 
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Optional
 
 import httpx
@@ -70,7 +70,8 @@ def _sensor_conditions(db: Session, sensor: Sensor) -> tuple[float, float]:
     averages = db.execute(
         select(func.avg(Reading.temperature), func.avg(Reading.humidity))
     ).first()
-    return round(float(averages[0]), 1), round(float(averages[1]), 1)
+    # SQL AVG over an empty table returns NULL — fall back to sane defaults
+    return round(float(averages[0] or 25.0), 1), round(float(averages[1] or 60.0), 1)
 
 
 @router.post("/predict", response_model=PredictResponse)
@@ -143,30 +144,53 @@ def ask(request: AskRequest, db: Session = Depends(get_db)):
 
 
 def _air_quality_context(db: Session) -> str:
-    """Snapshot of current conditions to ground the LLM answer."""
-    day_ago = datetime.now().timestamp() - 24 * 3600
-    cutoff = datetime.fromtimestamp(day_ago)
+    """Snapshot of current conditions to ground the LLM answer.
 
-    city_avg = db.execute(
-        select(func.avg(Reading.pm25)).where(Reading.timestamp >= cutoff)
-    ).scalar()
-    top_rows = db.execute(
-        select(Sensor.location, func.avg(Reading.pm25).label("avg_pm25"))
-        .join(Reading)
-        .where(Reading.timestamp >= cutoff)
-        .group_by(Sensor.location)
-        .order_by(func.avg(Reading.pm25).desc())
-        .limit(3)
-    ).all()
-    sensor_count = db.query(func.count(Sensor.id)).scalar()
-    reading_count = db.query(func.count(Reading.id)).scalar()
+    Widens to a 7-day window when the last 24 h contain no readings,
+    so aging/static datasets don't crash the endpoint (SQL AVG over
+    zero rows returns NULL, and float(None) raises TypeError).
+    """
+    now = datetime.now()
+
+    def window_snapshot(hours):
+        cutoff = now - timedelta(hours=hours)
+        avg_pm25 = db.execute(
+            select(func.avg(Reading.pm25)).where(Reading.timestamp >= cutoff)
+        ).scalar()
+        top_rows = db.execute(
+            select(Sensor.location, func.avg(Reading.pm25).label("avg_pm25"))
+            .join(Reading)
+            .where(Reading.timestamp >= cutoff)
+            .group_by(Sensor.location)
+            .order_by(func.avg(Reading.pm25).desc())
+            .limit(3)
+        ).all()
+        return avg_pm25, top_rows
+
+    city_avg, top_rows = window_snapshot(24)
+    window_label = "last 24h"
+    if city_avg is None or not top_rows:
+        city_avg, top_rows = window_snapshot(7 * 24)
+        window_label = "last 7 days"
+
+    sensor_count = db.query(func.count(Sensor.id)).scalar() or 0
+    reading_count = db.query(func.count(Reading.id)).scalar() or 0
+
+    if city_avg is None:
+        pollution_line = "No readings available in the last 7 days."
+        hotspot_line = "Location ranking unavailable (no recent data)."
+    else:
+        hotspots = ", ".join(
+            f"{row.location} ({round(float(row.avg_pm25), 1)})" for row in top_rows
+        )
+        pollution_line = f"City average PM2.5 ({window_label}): {round(float(city_avg), 1)} µg/m³"
+        hotspot_line = f"Highest-pollution locations ({window_label} avg): {hotspots or 'none'}"
 
     lines = [
-        f"City average PM2.5 (last 24h): {round(float(city_avg), 1)} µg/m³",
-        "Highest-pollution locations (24h avg): "
-        + ", ".join(f"{r.location} ({round(float(r.avg_pm25), 1)})" for r in top_rows),
+        pollution_line,
+        hotspot_line,
         f"Sensor network: {sensor_count} sensors, {reading_count} readings stored",
-        f"Current time: {datetime.now().strftime('%Y-%m-%d %H:%M')}",
+        f"Current time: {now.strftime('%Y-%m-%d %H:%M')}",
     ]
     return "\n".join(lines)
 
