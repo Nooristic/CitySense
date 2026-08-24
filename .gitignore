@@ -44,3 +44,14 @@ Desktop.ini
 # Personal prep notes (keep local, never push)
 PROJECT_REFERENCE.md
 LEARNING_ROADMAP.md
+
+# Personal learning docs & sprint tracker (local only)
+DAY1_GUIDE.md
+DAY2_GUIDE.md
+DAY2_SETUP.md
+DATA_GENERATION_GUIDE.md
+FASTAPI_CHEATSHEET.md
+POSTGRES_VS_MYSQL.md
+SQL_AGGREGATIONS_GUIDE.md
+SQLALCHEMY_CHEATSHEET.md
+PROGRESS_TRACKER.md
