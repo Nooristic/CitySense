@@ -21,6 +21,14 @@ DATABASE_URL = os.getenv(
     "postgresql+psycopg2://postgres:postgres@localhost:5432/citysense",
 )
 
+# Cloud platforms (Render/Railway/Heroku) hand out postgresql:// URLs, but
+# SQLAlchemy needs the psycopg2 driver spelled out. Normalize so the env var
+# can be pasted as-is from a provider dashboard.
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+psycopg2://", 1)
+elif DATABASE_URL.startswith("postgresql://"):
+    DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+psycopg2://", 1)
+
 # `pool_pre_ping=True` checks the connection before each request —
 # prevents "server closed connection" errors after Postgres restarts.
 engine = create_engine(DATABASE_URL, pool_pre_ping=True)
