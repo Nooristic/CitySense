@@ -46,15 +46,37 @@ git push origin main
 4. **Create Web Service** → first deploy takes a few minutes.
 5. Verify: open `https://<your-app>.onrender.com/docs` → try `GET /health`.
 
-## Step 3 — Seed the cloud database (once)
+## Step 3 — Seed the cloud database (no Shell needed on free tier)
 
-Render dashboard → your web service → **Shell** tab:
+Render's Shell requires a paid instance. Two free options:
 
-```bash
-python generate_data.py     # tables + ~20k readings with fresh timestamps
-python train_model.py       # optional; the model otherwise auto-trains on
-                            # the first /api/predict call (~1 min, free tier CPU)
+### Option A — seed from your own machine (recommended)
+
+1. Render → your **Postgres** → **Info** → copy the **External Database URL** (`...?sslmode=require`).
+2. Locally:
+
+   ```powershell
+   cd server
+   $env:DATABASE_URL = "postgresql://<external-url-here>"
+   python generate_data.py          # seeds the CLOUD db
+   Remove-Item Env:DATABASE_URL     # IMPORTANT: back to local db
+   ```
+
+3. Verify: `https://<your-app>.onrender.com/health` → sensors 10, readings ~20k.
+
+Skip `train_model.py` in the cloud — the model **auto-trains on the first `/api/predict` call** (~1 min once on free CPU, then cached).
+
+### Option B — seed on every deploy (zero commands)
+
+Settings → Start Command:
+
 ```
+python generate_data.py && uvicorn main:app --host 0.0.0.0 --port $PORT
+```
+
+Idempotent: seeds on first boot, no-ops on restarts (adds a few seconds per boot).
+
+> **Render free Postgres expires after 30 days.** If the demo URL must outlive that, recreate + re-seed, or upgrade the DB only.
 
 ## Step 4 — Frontend (Vercel)
 
