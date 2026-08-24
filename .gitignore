@@ -40,3 +40,7 @@ server/model_store/
 # OS files
 Thumbs.db
 Desktop.ini
+
+# Personal prep notes (keep local, never push)
+PROJECT_REFERENCE.md
+LEARNING_ROADMAP.md

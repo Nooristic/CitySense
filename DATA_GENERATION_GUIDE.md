@@ -2,6 +2,8 @@
 
 **Context:** How to generate synthetic data that looks real (not random garbage)
 
+> **Continuous mode:** these formulas don't just seed history once — `server/simulate_sensors.py` reuses them live every 15 minutes (CPCB CAAQMS-style) and backfills gaps on startup. Same patterns, forever-fresh data.
+
 ---
 
 ## 🎯 Why Realistic Data Matters

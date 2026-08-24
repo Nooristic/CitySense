@@ -31,10 +31,10 @@ CitySense collects, stores, and visualizes air quality data from a distributed s
                     └──────────────┬──────────────┬────────────────┘
                                    │              │
                                    ▼              ▼
-                            ┌────────────┐  ┌──────────────────┐
-                            │ PostgreSQL │  │ React Dashboard  │
-                            │ citysense  │◄─│ (web/, port 5173)│
-                            │ ~20k rows  │  │ Leaflet + Chart  │
+   simulate_sensors.py      ┌────────────┐  ┌──────────────────┐
+   (15-min CPCB-style  ────►│ PostgreSQL │  │ React Dashboard  │
+    live readings)          │ citysense  │◄─│ (web/, port 5173)│
+                            │ 21k+ rows  │  │ Leaflet + Chart  │
                             └────────────┘  └──────────────────┘
 ```
 
@@ -52,6 +52,7 @@ CitySense/
 │   ├── database.py      #   Engine/session (DATABASE_URL from .env)
 │   ├── models.py        #   Sensor ↔ Reading ORM models
 │   ├── generate_data.py #   Creates tables + seeds ~20k realistic readings
+│   ├── simulate_sensors.py # Continuous readings: 15-min CPCB-style cadence + gap backfill
 │   ├── ml_model.py      #   RandomForest training/inference
 │   ├── train_model.py   #   CLI trainer (python train_model.py)
 │   ├── ai_routes.py     #   /api/predict, /api/ask, /api/model/info, /api/health
@@ -172,7 +173,7 @@ sensors                              readings
 +------------------+
 ```
 
-Synthetic dataset (10 Hyderabad locations): temperature follows a time-of-day sine wave, humidity is inversely correlated, PM2.5 peaks during rush hours (8–10 AM, 6–8 PM).
+Synthetic dataset (10 Hyderabad locations): temperature follows a time-of-day sine wave, humidity is inversely correlated, PM2.5 peaks during rush hours (8–10 AM, 6–8 PM). After seeding, `simulate_sensors.py` appends fresh readings every 15 minutes using these same formulas — matching the CPCB CAAQMS transmission protocol used by India's official monitoring stations.
 
 ---
 
@@ -189,9 +190,9 @@ Synthetic dataset (10 Hyderabad locations): temperature follows a time-of-day si
 ## Development Notes
 
 - Run commands **from inside each app folder** (imports are flat, e.g. `from database import ...`); don't share one venv across folders.
-- Verification is manual via Swagger UI / curl / the dashboard — no automated tests.
+- Verification is manual via Swagger UI / curl / the dashboard, plus `server/tests/` (`python -m pytest tests/ -v`, 18 cases).
 - `web/`: use `npm run lint` (oxlint) and `npm run build`.
-- If charts come back empty, regenerate data (`python generate_data.py`) — aggregation windows filter by `NOW() - N hours`.
+- If charts come up empty, start `python simulate_sensors.py` — it backfills any gap and keeps transmitting; no manual regeneration needed.
 - `server/model_store/` is gitignored; the model retrains automatically from the DB on first use.
 
 ---
