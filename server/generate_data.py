@@ -107,7 +107,11 @@ def generate_readings(db: Session, sensors: list, days: int = 7):
     """
     print(f"Generating {days} days of readings (every 5 min per sensor)...")
 
-    start_date = datetime(2026, 8, 10, 0, 0, 0)  # Aug 10, 2026 00:00
+    # Start 7 days ago (relative, not hardcoded) so freshly seeded data always
+    # falls inside the API's NOW()-based aggregation windows.
+    start_date = (datetime.now() - timedelta(days=7)).replace(
+        hour=0, minute=0, second=0, microsecond=0
+    )
     readings = []
     batch_size = 5000  # Insert in batches for performance
 
