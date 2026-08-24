@@ -233,6 +233,26 @@ You'll build a dashboard that:
 
 ## 🐛 Troubleshooting
 
+**Chat answers don't match the dashboard charts:**
+Not a bug — different lenses. Charts show the *current hour* (e.g. 44.4); `/api/ask` context includes both the 24h average *and* the most recent hourly averages (since Aug 24), so "right now" questions should now quote the same numbers as the chart's latest point.
+
+**Code changes / .env edits "don't take effect":**
+A zombie server may own port 8000 — new instances die silently with "address already in use".
+```powershell
+Get-NetTCPConnection -LocalPort 8000 -State Listen   # who owns the port?
+Stop-Process -Id <thatPID> -Force                    # kill the zombie
+```
+For LLM changes also check which model is actually loaded: `ollama ps`.
+
+**Chat numbers look scrambled or comparisons reversed:**
+The default `qwen2.5:0.5b-instruct` is a toy model — it reads correct data but mangles digits. Upgrade (one-time ~2 GB download):
+```powershell
+ollama pull qwen2.5:3b-instruct
+# then in server/.env:  OLLAMA_MODEL=qwen2.5:3b-instruct
+# restart uvicorn
+```
+Verified Aug 24: with 3b, chat answers match raw SQL ground truth exactly (LB Nagar 44.4 current hour / 38.2 24h avg).
+
 **Connection error when running `generate_data.py`:**
 ```
 sqlalchemy.exc.OperationalError: could not connect to server
