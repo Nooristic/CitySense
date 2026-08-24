@@ -45,7 +45,7 @@ The API base URL defaults to `http://localhost:8000`; override with `VITE_API_UR
 
 ## Gotchas
 
-- Aggregation endpoints filter by `NOW() - N hours`. The synthetic dataset originally covered Aug 10–16; on Aug 22 all reading timestamps were shifted **+6 days** (now Aug 16–22) so default windows return data. If charts come back empty later, re-shift timestamps or regenerate data.
+- Aggregation endpoints filter by `NOW() - N hours`. The original seed covered Aug 16–22 and went stale; `server/simulate_sensors.py` now backfills gaps and appends readings every 15 min (CPCB-style), so windows stay populated as long as it runs. If charts come up empty, start the simulator.
 - Leaflet's default marker icons break under bundlers (missing asset paths), so the map uses `CircleMarker` instead — no icon assets needed.
 - `npm run lint` (oxlint) and `npm run build` both pass; there is no test suite.
 

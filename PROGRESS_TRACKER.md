@@ -124,3 +124,12 @@ At end of each day, answer:
 ---
 
 **Let's build this! 🚀**
+
+---
+
+## 🧪 Post-Sprint Enhancements
+
+- [x] AI panel wired into React dashboard (`/api/ask` chat + `/api/predict` card)
+- [x] Error hardening: NULL-safe `/api/ask` context (24h→7d fallback), DB-down → clean 503
+- [x] 18-case pytest suite green
+- [x] **Continuous sensor simulation** (`server/simulate_sensors.py`) — 15-min CPCB CAAQMS-aligned cadence with gap backfill; ends the stale-dataset era permanently

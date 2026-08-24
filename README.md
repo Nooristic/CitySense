@@ -88,6 +88,9 @@ python generate_data.py
 python train_model.py
 
 uvicorn main:app --reload          # → http://localhost:8000/docs
+
+# Terminal 2 — keep fresh readings flowing (15-min CPCB-style cadence)
+python simulate_sensors.py         # backfills any gap, then transmits forever
 ```
 
 Database config lives in `server/.env` (`DATABASE_URL=postgresql+psycopg2://postgres:postgres@localhost:5432/citysense`). Never commit `.env`.

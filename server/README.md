@@ -1,8 +1,25 @@
 # Day 2: PostgreSQL + SQLAlchemy + Data Generation
 
 **Date:** August 17, 2026  
-**Status:** Code ready — waiting for PostgreSQL installation  
+**Status:** Live — static seed + continuous simulator  
 **Time invested:** 2 hours (code complete, docs written)
+
+---
+
+## 🔄 Continuous Data Simulation
+
+`generate_data.py` seeds history once; `simulate_sensors.py` keeps it alive:
+
+```bash
+python simulate_sensors.py                  # backfill gap + transmit every 15 min
+python simulate_sensors.py --once           # single transmission (cron-friendly)
+python simulate_sensors.py --interval 300   # custom cadence (e.g. PurpleAir-style 5 min)
+```
+
+- Default interval **900s = 15 min**, deliberately matching CPCB's CAAQMS protocol (stations transmit 15-minute averages at :00/:15/:30/:45).
+- On startup it **backfills** every missed slot between the newest stored reading and now, so time-windowed endpoints never go empty again.
+- Reuses the same realistic formulas as `generate_data.py`, keeping patterns consistent with what the ML model learned.
+- Writes directly via SQLAlchemy (bypasses the API); ~960 rows/day; run ONE instance only.
 
 ---
 
