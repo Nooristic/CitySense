@@ -176,6 +176,25 @@ def _air_quality_context(db: Session) -> str:
     sensor_count = db.query(func.count(Sensor.id)).scalar() or 0
     reading_count = db.query(func.count(Reading.id)).scalar() or 0
 
+    # "Right now" lens: averages for the most recent hourly slot, so answers
+    # line up with what the dashboard's latest chart point shows.
+    latest_slot = db.query(func.max(Reading.timestamp)).scalar()
+    latest_line = None
+    if latest_slot is not None:
+        hour_start = latest_slot.replace(minute=0, second=0, microsecond=0)
+        recent = db.execute(
+            select(Sensor.location, func.avg(Reading.pm25))
+            .join(Reading)
+            .where(Reading.timestamp >= hour_start)
+            .group_by(Sensor.location)
+            .order_by(func.avg(Reading.pm25).desc())
+        ).all()
+        if recent:
+            latest_line = (
+                f"Most recent hourly averages ({hour_start:%H:%M} slot): "
+                + ", ".join(f"{loc} ({round(float(a), 1)})" for loc, a in recent)
+            )
+
     if city_avg is None:
         pollution_line = "No readings available in the last 7 days."
         hotspot_line = "Location ranking unavailable (no recent data)."
@@ -192,6 +211,8 @@ def _air_quality_context(db: Session) -> str:
         f"Sensor network: {sensor_count} sensors, {reading_count} readings stored",
         f"Current time: {now.strftime('%Y-%m-%d %H:%M')}",
     ]
+    if latest_line:
+        lines.insert(2, latest_line)
     return "\n".join(lines)
 
 
